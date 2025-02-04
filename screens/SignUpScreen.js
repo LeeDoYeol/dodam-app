@@ -116,6 +116,7 @@ const SignUpScreen = ({ navigation }) => {
       if (response.data.success) {
         Alert.alert('회원가입 성공', '로그인 페이지로 이동합니다.');
         navigation.navigate('Login');
+        return
       } else {
         Alert.alert('회원가입 실패', response.data.message || '다시 시도하세요.');
       }

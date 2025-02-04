@@ -68,7 +68,7 @@ const LoginScreen = () => {
       
       {/* 로그인 버튼 */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>로그인</Text>
+        <Text style={styles.buttonText}>로그인1</Text>
       </TouchableOpacity>
 
       {/* 회원가입 버튼 */}
