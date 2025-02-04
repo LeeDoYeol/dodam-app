@@ -40,7 +40,6 @@ const LoginScreen = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      Alert.alert('error', toString(error));
       Alert.alert('로그인 오류', '오류가 발생했습니다.');
     }
   };
