@@ -75,8 +75,8 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    // 생일 형식 검증 (8자리, YYYYMMDD)
-    if (birthday && !/^\d{8}\$/.test(birthday)) {
+    /* // 생일 형식 검증 (8자리, YYYYMMDD)
+    if (birthday && !/^\d{8}$/.test(birthday)) {
       Alert.alert('입력 오류', '생일은 YYYYMMDD 형식으로 입력해야 합니다.');
       return;
     }
@@ -85,7 +85,7 @@ const SignUpScreen = ({ navigation }) => {
     if (phoneNumber && !/^\d{11}$/.test(phoneNumber)) {
       Alert.alert('입력 오류', '올바른 전화번호가 아닙니다.');
       return;
-    }
+    } */
   
     const formData = new FormData();
     formData.append('username', username);
@@ -149,7 +149,7 @@ const SignUpScreen = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="전화번호호"
+        placeholder="전화번호"
         keyboardType="phone-pad"
         value={phoneNumber}
         onChangeText={setPhoneNumber}
