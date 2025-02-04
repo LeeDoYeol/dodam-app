@@ -129,34 +129,34 @@ const SignUpScreen = ({ navigation }) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Username(필수)"
+        placeholder="이름(필수)"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
-        placeholder="Email(필수)"
+        placeholder="이메일(필수)"
         value={email}
         keyboardType="email-address"
         onChangeText={setEmail}
       />
       <TextInput
         style={styles.input}
-        placeholder="Password(필수)"
+        placeholder="비밀번호(필수)"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       <TextInput
         style={styles.input}
-        placeholder="Phone Number"
+        placeholder="전화번호호"
         keyboardType="phone-pad"
         value={phoneNumber}
         onChangeText={setPhoneNumber}
       />
       <TextInput
         style={styles.input}
-        placeholder="Birthday (YYYY-MM-DD)"
+        placeholder="생일 (YYYY-MM-DD)"
         keyboardType="phone-pad"
         value={birthday}
         onChangeText={setBirthday}
@@ -167,7 +167,7 @@ const SignUpScreen = ({ navigation }) => {
         style={[styles.button, profilePicture && styles.disabledButton]}
         onPress={pickImage}
       >
-        <Text style={styles.buttonText}>{profilePicture ? 'Image Selected' : 'Pick Profile Picture'}</Text>
+        <Text style={styles.buttonText}>{profilePicture ? '사진 수정' : '사진 선택'}</Text>
       </TouchableOpacity>
 
       {/* 회원가입 버튼 */}
@@ -176,7 +176,7 @@ const SignUpScreen = ({ navigation }) => {
         onPress={handleSignUp}
         // disabled={!username || !email || !password}
       >
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>회원가입</Text>
       </TouchableOpacity>
     </View>
   );

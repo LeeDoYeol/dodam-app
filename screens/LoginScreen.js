@@ -33,14 +33,14 @@ const LoginScreen = () => {
         await AsyncStorage.setItem('authid', String(response.data.id));
         await AsyncStorage.setItem('authusername', response.data.username);
         await AsyncStorage.setItem('authprofile_picture', response.data.profile_picture);
-        Alert.alert('Login successful');
+        //Alert.alert('Login successful');
         navigation.navigate('Home');
       } else {
-        Alert.alert('Login failed!', 'Invalid credentials.');
+        Alert.alert('로그인 실패', '이메일 또는 비밀번호가 틀렸습니다.');
       }
     } catch (error) {
       console.error('Login error:', error);
-      Alert.alert('Login error', 'An unexpected error occurred.');
+      Alert.alert('로그인 오류', '오류가 발생했습니다.');
     }
   };
 
@@ -53,14 +53,14 @@ const LoginScreen = () => {
       <Image source={require('../assets/icon.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="이메일"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="비밀번호"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -68,12 +68,12 @@ const LoginScreen = () => {
       
       {/* 로그인 버튼 */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>로그인</Text>
       </TouchableOpacity>
 
       {/* 회원가입 버튼 */}
       <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>회원가입</Text>
       </TouchableOpacity>
     </View>
   );

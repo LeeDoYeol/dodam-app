@@ -388,7 +388,7 @@ export default function App() {
               </View>
               {post.profile_picture==myprofile_picture && (
                 <TouchableOpacity onPress={() => handleDelete(post.id)}>
-                  <Text style={{ paddingRight: 20 }}>{post.id}🗑️</Text>
+                  <Text style={{ paddingRight: 20 }}>🗑️</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -432,7 +432,7 @@ export default function App() {
                 Array.isArray(post.comments) &&
                 post.comments.some(comment => comment.created_at !== null) && ( // created_at이 null이 아닌 댓글이 있을 때만 렌더링
                   <View style={{ paddingLeft: 20, marginTop: 10 }}>
-                    <Text>Comments</Text>
+                    <Text>댓글</Text>
                     {post.comments.map((comment, idx) => (
                       comment.created_at !== null && ( // created_at이 null이 아닐 때만 표시
                         <View key={idx} style={{ flexDirection: 'row', alignItems: 'center' }}>
