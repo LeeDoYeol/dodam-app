@@ -40,6 +40,7 @@ const LoginScreen = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
+      Alert.alert('error', toString(error));
       Alert.alert('로그인 오류', '오류가 발생했습니다.');
     }
   };
@@ -68,7 +69,7 @@ const LoginScreen = () => {
       
       {/* 로그인 버튼 */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>로그인1</Text>
+        <Text style={styles.buttonText}>로그인</Text>
       </TouchableOpacity>
 
       {/* 회원가입 버튼 */}
