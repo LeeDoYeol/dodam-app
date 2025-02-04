@@ -122,6 +122,7 @@ const SignUpScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error('SignUp error:', error);
+      //Alert.alert('오류 발생', `게시글을 업로드할 수 없습니다. 오류: ${JSON.stringify(error, null, 2)}`)
       Alert.alert('회원가입 오류', '네트워크를 확인하세요.');
     }
   };  

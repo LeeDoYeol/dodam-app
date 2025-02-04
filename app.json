@@ -22,8 +22,13 @@
       },
       "package": "com.melon369.dodam",
       "permissions": [
-        "INTERNET"
-      ]
+        "INTERNET",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA"
+      ],
+      "allowHttp": true,
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,6 +47,17 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "plugins": ["expo-updates"]
+    "plugins": [
+      "expo-updates",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
+    
   }
 }

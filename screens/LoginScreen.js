@@ -40,6 +40,7 @@ const LoginScreen = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
+      //Alert.alert('오류 발생', `게시글을 업로드할 수 없습니다. 오류: ${JSON.stringify(error, null, 2)}`)
       Alert.alert('로그인 오류', '오류가 발생했습니다.');
     }
   };
