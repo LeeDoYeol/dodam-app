@@ -28,7 +28,7 @@
         "CAMERA"
       ],
       "allowHttp": true,
-      "usesCleartextTraffic": true
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
