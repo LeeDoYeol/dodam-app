@@ -6,17 +6,17 @@ import { Alert } from 'react-native';
 export const requestNotificationPermission = async () => {
   const { status } = await Notifications.requestPermissionsAsync();
   if (status !== 'granted') {
-    console.log('Permission to send notifications was denied');
+    //console.log('Permission to send notifications was denied');
     return false;
   }
-  console.log('Permission granted');
+  //console.log('Permission granted');
   return true;
 };
 
 // Expo Push Token을 받아오는 함수
 export const getExpoPushToken = async (user_id) => {
   const token = await Notifications.getExpoPushTokenAsync();
-  console.log('Expo Push Token:', token.data);
+  //console.log('Expo Push Token:', token.data);
 
   // 토큰을 서버로 전송
   await sendTokenToServer(token.data, user_id);  // 서버로 토큰 전송 함수
@@ -58,7 +58,7 @@ export const sendPushNotificationToServer = async (title, message, id, post_id, 
   
       const data = await response.json();
       if (data.success) {
-        console.log('Push notification request sent successfully');
+        //console.log('Push notification request sent successfully');
       } else {
         Alert.alert('알림 전송 실패', '다른 사용자에게 알림 전송을 실패했습니다.\n(작업은 성공)')
         console.error('Failed to send push notification request');
@@ -102,7 +102,7 @@ export const notificationListener = async (navigation) => {
                 text: "취소", // 취소 버튼
                 onPress: () => {
                 // 아무 동작도 하지 않음
-                console.log('취소');
+                //console.log('취소');
                 },
             },
             ]
@@ -118,7 +118,7 @@ export const notificationListener = async (navigation) => {
 // 백그라운드에서 푸시 알림을 처리하는 리스너 설정
 export const backgroundNotificationListener = (navigation) => {
   const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-    console.log('Notification received in background:', response);
+    //console.log('Notification received in background:', response);
     const { post_id } = response.notification.request.content.data;
     
     // post_id에 해당하는 게시물 화면으로 네비게이션

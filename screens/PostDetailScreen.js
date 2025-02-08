@@ -38,6 +38,14 @@ const PostDetail = ({ route }) => {
         }
         // postId를 기반으로 해당 게시물 데이터를 가져옴
         fetchPostById(postId);
+
+        // 5분마다 getPosts() 호출
+        const intervalId = setInterval(() => {
+            fetchPostById(postId);
+        }, 60000); // 5000ms = 5초, 300000ms = 5분
+
+        // 컴포넌트가 언마운트되면 interval을 정리
+        return () => clearInterval(intervalId);
       } catch (error) {
         console.error('Error checking login status:', error);
       }
@@ -68,7 +76,6 @@ const PostDetail = ({ route }) => {
             created_at: post.created_at ? new Date(post.created_at).toISOString().slice(0, 19).replace("T", " ") : null,
             comments: typeof post.comments === "string" ? JSON.parse(post.comments) : post.comments
           }));
-          console.log(formattedData[0])
       
           setPost(formattedData[0]);
         }
@@ -242,13 +249,21 @@ const handleLike = async (id) => {
     }
   };
 
+  // 로그아웃 함수
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('authToken'); // 저장된 토큰 삭제
+    navigation.navigate('Login'); // 로그인 화면으로 이동
+  };
+
   if (!post) return <Text>Loading...</Text>;
 
   return (
     <View>
         <View style={styles.header}>
             <Text style={styles.headerText}>도담</Text>
-            <Image source={require('../assets/logo.png')} style={styles.logo} />
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Image source={require('../assets/logo.png')} style={styles.logo} />
+            </TouchableOpacity>
             <Button title="로그아웃" onPress={handleLogout} color="#ff9500" />
         </View>
       <Card key='0' style={{ marginBottom: 10 }}>
@@ -309,9 +324,9 @@ const handleLike = async (id) => {
                     <View key={idx} style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
                         source={{ uri: comment.profile_picture }}
-                        style={{ width: 20, height: undefined, aspectRatio: 1 }}
+                        style={{ width: 20, height: undefined, aspectRatio: 1, borderRadius: 5 }}
                         />
-                        <Text style={{ marginLeft: 10 }}>
+                        <Text style={{ marginLeft: 5 }}>
                         {comment.username} : {comment.text}
                         </Text>
                     </View>

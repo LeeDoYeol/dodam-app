@@ -8,7 +8,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { requestNotificationPermission, getExpoPushToken, notificationListener, backgroundNotificationListener, sendPushNotificationToServer } from '../utils/notifications';
 
-const notificationSetupDone = useRef(false); // ✅ 알림 설정 완료 여부 추적
+
 
 import axios from 'axios';  // axios
 
@@ -27,6 +27,7 @@ export default function App() {
   const [myprofile_picture, setMyprofile_picture] = useState('');
   const [resizeModes, setResizeModes] = useState({}); // 각 이미지의 resizeMode 상태 저장
   const navigation = useNavigation();
+  const notificationSetupDone = useRef(false); // ✅ 알림 설정 완료 여부 추적
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -48,13 +49,20 @@ export default function App() {
 
           const unsubscribe = notificationListener(navigation);
           const backgroundUnsubscribe = backgroundNotificationListener(navigation);
+          notificationSetupDone.current = true; // ✅ 한 번 실행되면 true로 설정
 
           return () => {
             if (typeof unsubscribe === 'function') unsubscribe();
             if (typeof backgroundUnsubscribe === 'function') backgroundUnsubscribe();
           };
-          notificationSetupDone.current = true; // ✅ 한 번 실행되면 true로 설정
         }
+        // 5분마다 getPosts() 호출
+        const intervalId = setInterval(() => {
+          getPosts();
+        }, 300000); // 5000ms = 5초, 300000ms = 5분
+
+        // 컴포넌트가 언마운트되면 interval을 정리
+        return () => clearInterval(intervalId);
       } catch (error) {
         console.error('Error checking login status:', error);
       }
@@ -466,7 +474,7 @@ export default function App() {
                         <View key={idx} style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Image
                             source={{ uri: comment.profile_picture }}
-                            style={{ width: 20, height: undefined, aspectRatio: 1 }}
+                            style={{ width: 20, height: undefined, aspectRatio: 1, borderRadius: 5 }}
                           />
                           <Text style={{ marginLeft: 10 }}>
                             {comment.username} : {comment.text}
