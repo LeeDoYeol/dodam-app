@@ -90,7 +90,7 @@ export const notificationListener = async (navigation) => {
             body,  // 알림 내용
             [
             {
-                text: "확인", // 확인 버튼
+                text: "이동", // 확인 버튼
                 onPress: () => {
                 // 확인 버튼을 누르면 게시물 디테일 화면으로 네비게이션
                 if (data && data.post_id) {
@@ -116,18 +116,15 @@ export const notificationListener = async (navigation) => {
   };
 
 // 백그라운드에서 푸시 알림을 처리하는 리스너 설정
-export const backgroundNotificationListener = (navigation) => {
-  const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-    //console.log('Notification received in background:', response);
-    const { post_id } = response.notification.request.content.data;
-    
-    // post_id에 해당하는 게시물 화면으로 네비게이션
-    if (post_id) {
-      navigation.navigate('PostDetail', { postId: post_id });
+export const backgroundNotificationListener = (navigation) => {  
+    const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+    const { postId } = response.notification.request.content.data;
+    if (postId) {
+        navigation.navigate('PostDetail', { postId });
     }
-  });
-
-  return () => {
-    backgroundSubscription.remove();
+    });
+  
+    return () => {
+      backgroundSubscription.remove();
+    };
   };
-};

@@ -36,6 +36,13 @@ const PostDetail = ({ route }) => {
           navigation.navigate('Login');
           return
         }
+
+        if (postId === 0) {
+          // postId가 0이면 Home으로 이동
+          navigation.navigate('Home');
+          return;
+        }
+        
         // postId를 기반으로 해당 게시물 데이터를 가져옴
         fetchPostById(postId);
 

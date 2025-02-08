@@ -2,6 +2,7 @@
   "expo": {
     "name": "도담",
     "slug": "dodam",
+    "scheme": "dodam",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
