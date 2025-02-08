@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Alert, StatusBar, View, Button, TextInput, Text, Image, ScrollView, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,6 +6,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Card } from 'react-native-paper';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import { requestNotificationPermission, getExpoPushToken, notificationListener, backgroundNotificationListener, sendPushNotificationToServer } from '../utils/notifications';
+
+const notificationSetupDone = useRef(false); // ✅ 알림 설정 완료 여부 추적
 
 import axios from 'axios';  // axios
 
@@ -39,6 +42,19 @@ export default function App() {
           return
         }
         getPosts();
+
+        if (!notificationSetupDone.current) {
+          setupNotifications();
+
+          const unsubscribe = notificationListener(navigation);
+          const backgroundUnsubscribe = backgroundNotificationListener(navigation);
+
+          return () => {
+            if (typeof unsubscribe === 'function') unsubscribe();
+            if (typeof backgroundUnsubscribe === 'function') backgroundUnsubscribe();
+          };
+          notificationSetupDone.current = true; // ✅ 한 번 실행되면 true로 설정
+        }
       } catch (error) {
         console.error('Error checking login status:', error);
       }
@@ -74,8 +90,15 @@ export default function App() {
       }
     };
 
+    const setupNotifications = async () => {
+      const hasPermission = await requestNotificationPermission();
+      if (hasPermission) {
+        await getExpoPushToken(await AsyncStorage.getItem('authid'));  // Expo Push Token을 서버로 보내는 함수 호출
+      }
+    };
+
     checkLoginStatus();
-  }, [token]);
+  }, [token, navigation]);
 
   // 로그아웃 함수
   const handleLogout = async () => {
@@ -159,6 +182,7 @@ export default function App() {
         setPosts([
           {
             id: result.id,
+            user_id: myid,
             profile_picture: myprofile_picture,
             username: myusername,
             created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
@@ -175,6 +199,7 @@ export default function App() {
         setImage(null);
         setText('');
         setModalVisible(false); // 모달 닫기
+        sendPushNotificationToServer(`${myusername}님의 새 게시물`, `새 게시물이 업로드되었습니다. 게시물을 확인해보세요!`, null, result.id, myid)
       } else {
         Alert.alert('게시글 업로드 실패', result.message);
       }
@@ -200,6 +225,9 @@ export default function App() {
       if (response.status === 200) {
         const updatedPosts = posts.map((post) => {
           if (post.id === id) {
+            if (response.data.message === 'Like added') {
+              sendPushNotificationToServer(`${myusername}님이 내 게시물을 좋아합니다.`, `좋아요를 누른 게시물을 확인해보세요!\n${post.text}`, post.user_id, post.id, myid)
+            }
             return {
               ...post,
               likeCount: response.data.message === 'Like added' ? post.likeCount + 1 : post.likeCount - 1,
@@ -232,7 +260,6 @@ export default function App() {
   };  
 
   // 댓글 추가 기능
-  
   const handleAddComment = async (id) => {
     if (newComment.trim() === '') {
       alert('댓글을 작성해주세요.');
@@ -259,6 +286,7 @@ export default function App() {
       // UI 업데이트
       const updatedPosts = posts.map((post) => {
         if (post.id === id) {
+          sendPushNotificationToServer(`${myusername}님이 내 게시물에 댓글을 달았습니다.`, newComment, post.user_id, post.id, myid)
           return {
             ...post,
             comments: [

@@ -4,31 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
+import PostDetailScreen from './screens/PostDetailScreen';
 import * as Notifications from "expo-notifications";
-import { requestNotificationPermission, getExpoPushToken, notificationListener, backgroundNotificationListener } from './utils/notifications';
-
 const Stack = createStackNavigator();
 
-export default function App() {
-  useEffect(() => {
-    const setupNotifications = async () => {
-      const hasPermission = await requestNotificationPermission();
-      if (hasPermission) {
-        await getExpoPushToken();  // Expo Push Token을 서버로 보내는 함수 호출
-      }
-    };
-
-    setupNotifications();
-
-    const unsubscribe = notificationListener();
-    const backgroundUnsubscribe = backgroundNotificationListener();
-
-    return () => {
-      if (typeof unsubscribe === 'function') unsubscribe();
-      if (typeof backgroundUnsubscribe === 'function') backgroundUnsubscribe();
-    };
-  }, []);
-  
+export default function App() {  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -45,6 +25,11 @@ export default function App() {
         <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
+          options={{ headerShown: false }}  
+        />
+        <Stack.Screen 
+          name="PostDetail" 
+          component={PostDetailScreen} 
           options={{ headerShown: false }}  
         />
       </Stack.Navigator>
